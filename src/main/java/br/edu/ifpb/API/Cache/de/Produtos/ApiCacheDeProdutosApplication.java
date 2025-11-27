@@ -7,7 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ApiCacheDeProdutosApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ApiCacheDeProdutosApplication.class, args);
+
+        SpringApplication.run(ApiCacheDeProdutosApplication.class, args);
 	}
 
 }
