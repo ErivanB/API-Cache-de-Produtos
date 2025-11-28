@@ -113,7 +113,7 @@ public class MemcachedService {
         }
     }
 
-    // Limpar ttodo o cache
+    // Limpar o cache
     public void clearCache() {
         try {
             memcachedClient.flushAll();
