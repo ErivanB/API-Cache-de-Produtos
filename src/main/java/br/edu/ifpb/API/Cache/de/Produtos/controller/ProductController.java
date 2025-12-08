@@ -1,7 +1,7 @@
 package br.edu.ifpb.API.Cache.de.Produtos.controller;
 
 import br.edu.ifpb.API.Cache.de.Produtos.model.Product;
-import br.edu.ifpb.API.Cache.de.Produtos.service.MemcachedService;
+import br.edu.ifpb.API.Cache.de.Produtos.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,17 +14,17 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ProductController {
 
-    private final MemcachedService memcachedService;
+    private final ProductService productService;
 
     @GetMapping
     public ResponseEntity<List<Product>> getAllProducts() {
-        List<Product> products = memcachedService.getAllProducts();
+        List<Product> products = productService.getAllProducts();
         return ResponseEntity.ok(products);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Product> getProduct(@PathVariable String id) {
-        Product product = memcachedService.getProduct(id);
+        Product product = productService.getProduct(id);
         if (product != null) {
             return ResponseEntity.ok(product);
         }
@@ -36,16 +36,16 @@ public class ProductController {
         if (product.getId() == null) {
             product.setId(UUID.randomUUID().toString());
         }
-        memcachedService.saveProduct(product);
+        productService.saveProduct(product);
         return ResponseEntity.ok(product);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Product> updateProduct(@PathVariable String id, @RequestBody Product product) {
-        Product existingProduct = memcachedService.getProduct(id);
+        Product existingProduct = productService.getProduct(id);
         if (existingProduct != null) {
             product.setId(id);
-            memcachedService.updateProduct(product);
+            productService.saveProduct(product);
             return ResponseEntity.ok(product);
         }
         return ResponseEntity.notFound().build();
@@ -53,9 +53,9 @@ public class ProductController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable String id) {
-        Product existingProduct = memcachedService.getProduct(id);
+        Product existingProduct = productService.getProduct(id);
         if (existingProduct != null) {
-            memcachedService.deleteProduct(id);
+            productService.deleteProduct(id);
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();
@@ -63,13 +63,13 @@ public class ProductController {
 
     @PostMapping("/{id}/cache")
     public ResponseEntity<String> clearProductCache(@PathVariable String id) {
-        memcachedService.deleteProduct(id);
+        productService.deleteProduct(id);
         return ResponseEntity.ok("Cache do produto limpo");
     }
 
     @PostMapping("/cache/clear")
     public ResponseEntity<String> clearAllCache() {
-        memcachedService.clearCache();
+        productService.clearCache();
         return ResponseEntity.ok("Todo o cache foi limpo");
     }
 }

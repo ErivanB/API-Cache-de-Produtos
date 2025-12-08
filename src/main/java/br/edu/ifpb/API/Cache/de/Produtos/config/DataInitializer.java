@@ -1,7 +1,7 @@
 package br.edu.ifpb.API.Cache.de.Produtos.config;
 
 import br.edu.ifpb.API.Cache.de.Produtos.model.Product;
-import br.edu.ifpb.API.Cache.de.Produtos.service.MemcachedService;
+import br.edu.ifpb.API.Cache.de.Produtos.service.ProductService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DataInitializer {
 
-    private final MemcachedService memcachedService;
+    private final ProductService productService;
 
     @PostConstruct
     public void init() {
@@ -28,7 +28,7 @@ public class DataInitializer {
                         new BigDecimal("199.99"), 30, "Áudio")
         );
 
-        sampleProducts.forEach(memcachedService::saveProduct);
-        System.out.println("Produtos de exemplo carregados no cache!");
+        sampleProducts.forEach(productService::saveProduct);
+        System.out.println("Produtos de exemplo carregados no Banco");
     }
 }

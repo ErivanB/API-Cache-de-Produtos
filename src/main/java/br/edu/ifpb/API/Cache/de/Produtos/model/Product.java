@@ -1,5 +1,7 @@
 package br.edu.ifpb.API.Cache.de.Produtos.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,9 +12,10 @@ import java.math.BigDecimal;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity // Transformando em Entidade
 public class Product implements Serializable {
     private static final long serialVersionUID = 1L;
-
+    @Id// ID para salvar no Banco
     private String id;
     private String name;
     private String description;
